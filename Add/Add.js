@@ -1,0 +1,46 @@
+/* eslint-disable require-yield, eqeqeq */
+
+import {
+  Sprite,
+  Trigger,
+  Watcher,
+  Costume,
+  Color,
+  Sound
+} from "https://unpkg.com/leopard@^1/dist/index.esm.js";
+
+export default class Add extends Sprite {
+  constructor(...args) {
+    super(...args);
+
+    this.costumes = [
+      new Costume("costume1", "./Add/costumes/costume1.svg", { x: 31.5, y: 26 })
+    ];
+
+    this.sounds = [];
+
+    this.triggers = [
+      new Trigger(Trigger.CLICKED, this.whenthisspriteclicked),
+      new Trigger(Trigger.GREEN_FLAG, this.whenGreenFlagClicked),
+      new Trigger(Trigger.KEY_PRESSED, { key: "a" }, this.whenKeyAPressed)
+    ];
+  }
+
+  *whenthisspriteclicked() {
+    yield* this.askAndWait("add/subtract to speed");
+    if (this.answer > -361 && this.answer < 361) {
+      this.stage.vars.speed += this.answer;
+    }
+  }
+
+  *whenGreenFlagClicked() {
+    this.goto(-60, 150);
+  }
+
+  *whenKeyAPressed() {
+    yield* this.askAndWait("add/subtract to speed");
+    if (this.answer > -361 && this.answer < 361) {
+      this.stage.vars.speed += this.answer;
+    }
+  }
+}
